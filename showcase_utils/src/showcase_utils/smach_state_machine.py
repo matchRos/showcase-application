@@ -3,44 +3,40 @@
 import rospy
 import smach
 
-# define state Foo
-class Foo(smach.State):
+# define state SingleRobotControll
+class SingleRobotControll(smach.State):
     def __init__(self):
-        smach.State.__init__(self, outcomes=['outcome1','outcome2'])
-        self.counter = 0
+        smach.State.__init__(self, outcomes=['switch_to_formation'])
 
     def execute(self, userdata):
-        rospy.loginfo('Executing state FOO')
-        if self.counter < 3:
-            self.counter += 1
-            return 'outcome1'
-        else:
-            return 'outcome2'
+        rospy.loginfo('Executing state SingleRobotControll')
+        rospy.sleep(1.0)
+        return 'switch_to_formation'
 
 
-# define state Bar
-class Bar(smach.State):
+# define state FormationControl
+class FormationControl(smach.State):
     def __init__(self):
-        smach.State.__init__(self, outcomes=['outcome2'])
+        smach.State.__init__(self, outcomes=['switch_to_single_robot'])
 
     def execute(self, userdata):
-        rospy.loginfo('Executing state BAR')
-        return 'outcome2'
+        rospy.loginfo('Executing state FormationControl')
+        rospy.sleep(1.0)
+        return 'switch_to_single_robot'
 
 if __name__ == '__main__':
     rospy.init_node('sc_test')
 
     # Create a SMACH state machine
-    sm = smach.StateMachine(outcomes=['outcome4', 'outcome5'])
+    sm = smach.StateMachine(outcomes=['outcome1'])
 
     # Open the container
     with sm:
         # Add states to the container
-        smach.StateMachine.add('FOO', Foo(), 
-                               transitions={'outcome1':'BAR', 
-                                            'outcome2':'outcome4'})
-        smach.StateMachine.add('BAR', Bar(), 
-                               transitions={'outcome2':'FOO'})
+        smach.StateMachine.add('Single_Robot_Controll', SingleRobotControll(), 
+                               transitions={'switch_to_formation':'Formation_Control'})
+        smach.StateMachine.add('Formation_Control', FormationControl(), 
+                               transitions={'switch_to_single_robot':'Single_Robot_Controll'})
 
     # Execute SMACH plan
     outcome = sm.execute()
