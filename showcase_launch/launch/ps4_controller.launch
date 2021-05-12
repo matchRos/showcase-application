@@ -5,14 +5,16 @@
         <param name="coalesce_interval" value="0.001"/>
     </node>
 
-    <node name="state_machine_controller" pkg="ps4_controller" type="ps4_diffdrive_services.py" output="screen" ns="virtual_master">
+    <node name="state_machine_controller" pkg="ps4_controller" type="ps4_diffdrive_services.py" output="screen">
             <param name="allow_cmd_vel" value="true"/>
             <param name="translation" value="0.1"/>
             <param name="rotation" value="0.2"/>
             <remap from="joy" to="/joy" />
             <param name="rate" value="100"/>
+            <remap from="cmd_vel" to="/ps4_controller/cmd_vel_input"/>          
             <remap from="OPTIONS" to="/showcase_application/options"/>
             <remap from="X" to="/showcase_application/X"/>
+            <remap from="CIRC" to="/showcase_application/CIRC"/>
             <remap from="RECT" to="/showcase_application/RECT"/>
     </node>
 </launch>

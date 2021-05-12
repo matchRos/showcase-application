@@ -27,6 +27,7 @@ class StateMachineIdle(smach.State, ButtonDetectionClass):
             rospy.sleep(0.1)
 
         if self._buttons_pressed["OPTIONS"]:
+            self._buttons_pressed["OPTIONS"] = False
             return "options_selected"
 
     def __options_button_cb(self, req):
@@ -80,7 +81,7 @@ def main():
                                "formation_controll_selected": "FORMATION_CONTROLL"})
 
         smach.StateMachine.add("SINGLE_ROBOT_CONTROLL", SingleRobotControllStateMachine(), 
-                               transitions={"quit_single_robot_controll":"finish"})
+                               transitions={"quit_single_robot_controll":"IDLE"})
         smach.StateMachine.add("FORMATION_CONTROLL", FormationControllStateMachine(),
                                transitions={"quit_formation_controll": "IDLE"})
 

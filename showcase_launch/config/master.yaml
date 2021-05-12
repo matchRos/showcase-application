@@ -1,0 +1,14 @@
+rate: 10 
+
+target:
+  input_type: 2
+  topic_pose: "/virtual_master/target_pose" # This is the topic where the target pose is published to
+  topic_twist: "/virtual_master/target_velocity" # This is the topic where the target velocity is published to
+
+current:
+  input_type: 0
+  topic_pose: "/virtual_master/master_pose" # This is the current position if the virtual master robot
+  topic_odom: "/virtual_master/master_velocity" # This is the current odometry of the virtual master robot
+
+lyapunov: [3.4,10.0,2.5]
+topic_output: "/virtual_master/cmd_vel"

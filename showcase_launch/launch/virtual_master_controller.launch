@@ -1,0 +1,10 @@
+<?xml version="2.0" ?>
+<launch>
+
+    <arg name="config_file" default="$(find showcase_launch)/config/master.yaml" doc="Path of the parameter configuration file"/>
+
+    <node unless="$(eval config_file=='')" name="master_controller" pkg="multi_robot_controller" type="master_node" output="screen">
+        <rosparam command="load" file="$(arg config_file)"/>
+    </node> 
+
+</launch>

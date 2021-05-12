@@ -1,0 +1,16 @@
+<launch>
+  <group ns="virtual_master">
+    <include file="$(find mir_description)/launch/upload_mir_urdf.launch"/>
+
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher">
+        <param name="tf_prefix" value="master"/>
+    </node>
+
+    <node name="base_link_broadcaster" pkg="transport_launcher" type="base_broadcaster.py">
+      <remap from="robot_pose" to="master_pose"/>
+      <param name="tf_prefix" value="master"/>
+    </node>  
+
+    <node name="fake_mir_joint_publisher" pkg="mir_driver" type="fake_mir_joint_publisher.py" output="screen" />    
+  </group>  
+</launch>
