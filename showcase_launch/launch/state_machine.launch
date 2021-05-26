@@ -1,0 +1,3 @@
+<launch>
+    <node pkg="showcase_utils" name="showcase_application" type="smach_state_machine.py" output="screen"/> 
+</launch>

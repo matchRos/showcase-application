@@ -41,7 +41,7 @@ class SingleRobotControllPrepare(smach.State):
 
     def __unregister_topics_services(self):
         self.__master_robot_pose_sub.unregister()
-        self.__virtual_master_pose_pub.unregister()
+        # self.__virtual_master_pose_pub.unregister()
 
     def execute(self, userdata):
         rospy.loginfo("Drive is now enabled.")
@@ -79,11 +79,12 @@ class SingleRobotControllDrive(smach.State, ButtonDetectionClass):
         # type: (SingleRobotControllDrive, TwistStamped) -> None
 
         if self.__virtual_master_pose == None:
+            # rospy.loginfo("SingleRobotControllDrive::__controller_cmd_vel_cb: virtual_master_pose is None")
             return
 
         new_virtual_master_pose = self.__virtual_master_pose
 
-        new_virtual_master_pose.pose.position.x = cb_data.twist.linear.x * (1.0 / self.__controller_rate)
+        new_virtual_master_pose.pose.position.x = self.__virtual_master_pose.pose.position.x + cb_data.twist.linear.x * (1.0 / self.__controller_rate)
         new_virtual_master_pose.pose.position.y = 0.0
         new_virtual_master_pose.pose.position.z = 0.0
 
@@ -114,6 +115,7 @@ class SingleRobotControllDrive(smach.State, ButtonDetectionClass):
         self._buttons_pressed["CIRC"] = True
 
     def execute(self, userdata):
+        print(userdata.virtual_master_pose)
         self.__virtual_master_pose = userdata.virtual_master_pose # type: PoseStamped
 
         # Stay in this state until one of the specified buttons is pressed

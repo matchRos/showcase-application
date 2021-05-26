@@ -1,0 +1,6 @@
+<launch>
+    <include file="$(find showcase_launch)/launch/virtual_master_controller.launch"/>    
+    <include file="$(find transport_launcher)/launch/state_machine.launch"/>   
+
+    <!-- <node type="rviz" name="rviz" pkg="rviz" args="-d $(find transport_launcher)/rviz/multimirvirtual.rviz" /> -->
+</launch>
