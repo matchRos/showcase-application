@@ -1,0 +1,18 @@
+<launch>
+    <!-- Launch the driver for the ps4 controller and publish data to "ps4_input" topic -->
+    
+    <arg name="robot_names"  default=''/>
+    <arg name="cmd_vel_topic_prefix"  default="mobile_base_controller"/>
+    
+    <node name="ps4_controller_driver" pkg="joy" type="joy_node">
+        <remap from="joy" to="ps4_input"/>
+    </node>
+
+    <!-- Get proper velocities from the raw controller data.-->   
+    <node name="teleoperate_collision_free" pkg="showcase_utils" type="teleop_collision_free.py" output="screen">
+        <rosparam command="load" file="$(find showcase_launch)/config/controller_config.yaml"/>
+        <remap from="joy" to="ps4_input"/>  <!--Get data from the "ps4_input" topic-->
+        <param name="cmd_vel_topic_prefix" value="$(arg cmd_vel_topic_prefix)" />
+        <rosparam param="robot_names" subst_value="True">$(arg robot_names)</rosparam>
+    </node>
+</launch>
